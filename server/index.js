@@ -23,6 +23,23 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+ // endpoint för anvädnare med behöriget
+ app.post('/pusher/user-auth', async (req, res) => {
+    const result = await pusher.get({
+        path: "/channels/presence-globalroom/users",
+    });
+    // console.log("LOG HERE : ", result)
+ });
+
+// console.log("LOG HERE : ", )
+
+// endpoint för att skicka meddelande
+app.post('/message', (req, res) => {
+    const regBody = req.body;
+    pusher.trigger("presence-globalroom", "message", regBody);
+    res.send(regBody)
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
